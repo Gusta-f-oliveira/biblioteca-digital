@@ -1,4 +1,4 @@
-package br.edu.cruzeirodosul;
+package br.edu.cruzeirodosul.view;
 
 import java.io.IOException;
 import javafx.fxml.FXML;

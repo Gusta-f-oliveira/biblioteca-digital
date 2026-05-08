@@ -1,7 +1,8 @@
-package br.edu.cruzeirodosul;
+package br.edu.cruzeirodosul.view;
 
 import java.io.IOException;
 
+import br.edu.cruzeirodosul.BibliotecaDigital;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -18,6 +19,6 @@ public class Register {
     
     @FXML
     private void telaLogin() throws IOException {
-        App.setRoot("Login");
+        BibliotecaDigital.setRoot("Login");
     }
 }
