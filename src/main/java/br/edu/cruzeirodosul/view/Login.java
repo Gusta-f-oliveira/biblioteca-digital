@@ -1,8 +1,13 @@
 package br.edu.cruzeirodosul.view;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import br.edu.cruzeirodosul.BibliotecaDigital;
+import br.edu.cruzeirodosul.model.ConnectionFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -20,35 +25,30 @@ public class Login {
         String senhaUsuario = txtSenha.getText();
 
         String sql = "SELECT * FROM usuarios WHERE nome = ? AND senha = ?";
-
-        try {
-            Connection c = DriverManager.getConnection(
-                    "jdbc:mysql://" + host + ":" + porta + "/" + bd,
-                    usuario,
-                    senha
-            );
-            return c;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
         
-        // try (Connection conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/sua_biblioteca\", \"seu_user\", \"sua_senha")) {
-        //     PreparedStatement comando = conexao.preparedStatement(sql);
+        ConnectionFactory fabrica = new ConnectionFactory();
+        
+        try (Connection conexao = fabrica.obtemConexao()) {
 
-        //     comando.setString(1, nomeUsuario);
-        //     comando.setString(2, senhaUsuario);
+            if (conexao == null) {
+                System.out.println("Erro crítico: Banco de dados inoperante.");
+            }
 
-        //     ResultSet resultado = comando.executeQuery();
+            PreparedStatement comando = conexao.prepareStatement(sql);
 
-        //     if (resultado.next()) {
-        //         App.setRoot("library");
-        //     } else {
-        //         System.out.println("Usuário ou senha inválidos!");
-        //     }
-        // } catch (SQLException e) {
-        //     System.err.println("Erro de conexão com o banco de dados: " + e.getMessage());
-        // }
+            comando.setString(1, nomeUsuario);
+            comando.setString(2, senhaUsuario);
+
+            ResultSet resultado = comando.executeQuery();
+
+            if (resultado.next()) {
+                BibliotecaDigital.setRoot("library");
+            } else {
+                System.out.println("Usuário ou senha inválidos!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao processar login: " + e.getMessage());
+        }
         
     }
 
