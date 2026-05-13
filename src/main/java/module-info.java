@@ -5,4 +5,7 @@ module br.edu.cruzeirodosul {
 
     opens br.edu.cruzeirodosul to javafx.fxml;
     exports br.edu.cruzeirodosul;
+
+    opens br.edu.cruzeirodosul.view to javafx.fxml;
+    exports br.edu.cruzeirodosul.view;
 }

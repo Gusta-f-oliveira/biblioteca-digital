@@ -17,7 +17,7 @@ public class BibliotecaDigital extends Application {
 
     @Override
     public void start(Stage stage) throws IOException { 
-        scene = new Scene(loadFXML("login"));
+        scene = new Scene(loadFXML("library"));
         stage.setScene(scene);
         stage.show();
     }

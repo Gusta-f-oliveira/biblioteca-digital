@@ -19,6 +19,6 @@ public class Register {
     
     @FXML
     private void telaLogin() throws IOException {
-        BibliotecaDigital.setRoot("Login");
+        BibliotecaDigital.setRoot("login");
     }
 }

@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.cruzeirodosul.view.Library">
    <children>
       <ScrollPane fitToWidth="true" layoutX="55.0" layoutY="62.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <TilePane style="-fx-background-color: #8B5A2B;">
+            <TilePane fx:id="tpPrateleira" style="-fx-background-color: #8B5A2B;">
                <children>
                   <VBox alignment="CENTER" prefHeight="180.0" prefWidth="120.0">
                      <children>
@@ -47,30 +47,6 @@
                      <children>
                         <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
                         <Label text="Livro 6" textFill="WHITE" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="120.0">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label text="Livro 7" textFill="WHITE" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="120.0">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label text="Livro 8" textFill="WHITE" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="120.0">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label text="Livro 9" textFill="WHITE" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="120.0">
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label text="Livro 10" textFill="WHITE" />
                      </children>
                   </VBox>
                </children>
