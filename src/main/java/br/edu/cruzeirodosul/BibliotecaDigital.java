@@ -16,7 +16,7 @@ public class BibliotecaDigital extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException { 
         scene = new Scene(loadFXML("login"));
         stage.setScene(scene);
         stage.show();
@@ -24,6 +24,28 @@ public class BibliotecaDigital extends Application {
 
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+
+        // 1. Pega a janela atual
+        Stage janela = (Stage) scene.getWindow();
+        
+        // 2. Manda a janela se reajustar ao tamanho do novo FXML
+        janela.sizeToScene();
+        
+        // 3. (Opcional, mas recomendado) Centraliza a nova janela no meio do monitor
+        janela.centerOnScreen();
+
+        if (fxml.equals("library")) {
+            // Ativa o modo tela cheia real
+            janela.setFullScreen(true);
+            
+            // Opcional: Personaliza a mensagem de aviso que o JavaFX mostra no topo
+            janela.setFullScreenExitHint("Pressione ESC para sair da estante");
+        } else {
+            // Garante que telas de login/cadastro não herdem o modo tela cheia
+            janela.setFullScreen(false);
+            janela.sizeToScene();
+            janela.centerOnScreen();
+        }
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
