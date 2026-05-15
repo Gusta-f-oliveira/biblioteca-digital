@@ -9,6 +9,7 @@ import br.edu.cruzeirodosul.BibliotecaDigital;
 import br.edu.cruzeirodosul.model.ConnectionFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class Register {
@@ -19,8 +20,8 @@ public class Register {
     @FXML
     private TextField txtSenha;
 
-    // @FXML
-    // private TextField txtSenhaConfirma;
+    @FXML
+    private PasswordField pfConfirmaSenha;
 
     @FXML
     private ComboBox<String> cbTipo;
@@ -39,21 +40,37 @@ public class Register {
     private void cadastrarUsuario() throws IOException {
         String nome = txtNome.getText();
         String senha = txtSenha.getText();
-        // No Scene Builder, adicione um ComboBox chamado 'cbTipo'
+        String confirmaSenha = pfConfirmaSenha.getText();
         String tipo = cbTipo.getValue(); 
 
+        // 1. VERIFICAÇÃO DE SENHA: Se forem diferentes, interrompe o cadastro
+        if (!senha.equals(confirmaSenha)) {
+            System.out.println("Erro: As senhas não coincidem!");
+            // Aqui futuramente você pode colocar um Label vermelho na tela para avisar o usuário
+            return; 
+        }
+
+        // 2. VERIFICAÇÃO DO TIPO: Evita que o usuário esqueça de escolher no ComboBox
+        if (tipo == null) {
+            System.out.println("Erro: Selecione o tipo de usuário (COMUM ou BIBLIOTECARIO)!");
+            return;
+        }
+
+        // Se passar nas verificações, faz o INSERT no banco
         String sql = "INSERT INTO usuarios (nome, senha, tipo_usuario) VALUES (?, ?, ?)";
         ConnectionFactory fabrica = new ConnectionFactory();
 
         try (Connection conexao = fabrica.obtemConexao();
-            PreparedStatement comando = conexao.prepareStatement(sql)) {
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
 
             comando.setString(1, nome);
             comando.setString(2, senha);
             comando.setString(3, tipo);
             comando.executeUpdate();
 
-            // Após cadastrar, volta para o login
+            System.out.println("Usuário cadastrado com sucesso!");
+
+            // Após cadastrar, volta para a tela de login
             BibliotecaDigital.setRoot("login");
 
         } catch (SQLException e) {

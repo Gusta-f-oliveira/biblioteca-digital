@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import br.edu.cruzeirodosul.BibliotecaDigital;
 import br.edu.cruzeirodosul.model.ConnectionFactory;
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class Login {
@@ -17,12 +18,12 @@ public class Login {
     private TextField txtNome;
 
     @FXML
-    private TextField txtSenha;
+    private PasswordField pfSenha;
 
     @FXML
     private void login() throws IOException {
         String nomeUsuario = txtNome.getText();
-        String senhaUsuario = txtSenha.getText();
+        String senhaUsuario = pfSenha.getText();
 
         String sql = "SELECT * FROM usuarios WHERE nome = ? AND senha = ?";
         
