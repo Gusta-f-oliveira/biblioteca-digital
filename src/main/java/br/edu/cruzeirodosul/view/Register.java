@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import br.edu.cruzeirodosul.BibliotecaDigital;
 import br.edu.cruzeirodosul.model.ConnectionFactory;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -18,17 +19,50 @@ public class Register {
     private TextField txtNome;
 
     @FXML
-    private TextField txtSenha;
+    private PasswordField pfSenhaOculta;
 
     @FXML
-    private PasswordField pfConfirmaSenha;
+    private TextField txtSenhaVisivel;
 
+    @FXML
+    private PasswordField pfConfirmaOculta;
+
+    @FXML
+    private TextField txtConfirmaVisivel;
+
+    @FXML
+    private CheckBox chkMostrarSenha;
+
+    @FXML
+    private CheckBox chkMostrarConfirma;
+    
     @FXML
     private ComboBox<String> cbTipo;
 
     @FXML
-    public void initialize() {
-        cbTipo.getItems().addAll("COMUM", "BIBLIOTECÁRIO");
+    private void mostrarSenha() throws  IOException {
+        if (chkMostrarSenha.isSelected()) {
+            txtSenhaVisivel.setText(pfSenhaOculta.getText());
+            pfSenhaOculta.setVisible(false);
+            txtSenhaVisivel.setVisible(true);
+        } else {
+            pfSenhaOculta.setText(txtSenhaVisivel.getText());
+            pfSenhaOculta.setVisible(true);
+            txtSenhaVisivel.setVisible(false);
+        }
+    }
+
+    @FXML
+    private void mostrarConfirma() throws IOException {
+        if (chkMostrarConfirma.isSelected()) {
+            txtConfirmaVisivel.setText(pfConfirmaOculta.getText());
+            pfConfirmaOculta.setVisible(false);
+            txtConfirmaVisivel.setVisible(true);
+        } else {
+            pfConfirmaOculta.setText(txtConfirmaVisivel.getText());
+            pfConfirmaOculta.setVisible(true);
+            txtConfirmaVisivel.setVisible(false);
+        }
     }
     
     @FXML
@@ -38,9 +72,12 @@ public class Register {
 
     @FXML
     private void cadastrarUsuario() throws IOException {
+        pfSenhaOculta.setVisible(true);
+        pfConfirmaOculta.setVisible(true);
+        
         String nome = txtNome.getText();
-        String senha = txtSenha.getText();
-        String confirmaSenha = pfConfirmaSenha.getText();
+        String senha = pfSenhaOculta.getText();
+        String confirmaSenha = pfConfirmaOculta.getText();
         String tipo = cbTipo.getValue(); 
 
         // 1. VERIFICAÇÃO DE SENHA: Se forem diferentes, interrompe o cadastro
@@ -76,6 +113,11 @@ public class Register {
         } catch (SQLException e) {
             System.err.println("Erro ao cadastrar: " + e.getMessage());
         }
+    }
+
+    @FXML
+    public void initialize() {
+        cbTipo.getItems().addAll("COMUM", "BIBLIOTECÁRIO");
     }
     
 }

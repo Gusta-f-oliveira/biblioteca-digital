@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import br.edu.cruzeirodosul.BibliotecaDigital;
 import br.edu.cruzeirodosul.model.ConnectionFactory;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -18,12 +19,33 @@ public class Login {
     private TextField txtNome;
 
     @FXML
-    private PasswordField pfSenha;
+    private PasswordField pfSenhaOculta;
+
+    @FXML
+    private TextField txtSenhaVisivel;
+
+    @FXML
+    private CheckBox chkMostrarSenha;
+
+    @FXML
+    private void mostrarSenha() throws  IOException {
+        if (chkMostrarSenha.isSelected()) {
+            txtSenhaVisivel.setText(pfSenhaOculta.getText());
+            pfSenhaOculta.setVisible(false);
+            txtSenhaVisivel.setVisible(true);
+        } else {
+            pfSenhaOculta.setText(txtSenhaVisivel.getText());
+            pfSenhaOculta.setVisible(true);
+            txtSenhaVisivel.setVisible(false);
+        }
+    }
 
     @FXML
     private void login() throws IOException {
+        pfSenhaOculta.setVisible(true);
+        
         String nomeUsuario = txtNome.getText();
-        String senhaUsuario = pfSenha.getText();
+        String senhaUsuario = pfSenhaOculta.getText();
 
         String sql = "SELECT * FROM usuarios WHERE nome = ? AND senha = ?";
         
