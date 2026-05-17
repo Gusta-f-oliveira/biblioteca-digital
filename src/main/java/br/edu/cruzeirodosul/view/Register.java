@@ -19,6 +19,12 @@ public class Register {
     private TextField txtNome;
 
     @FXML
+    private TextField txtEmail;
+
+    @FXML
+    private TextField txtTel;
+
+    @FXML
     private PasswordField pfSenhaOculta;
 
     @FXML
@@ -76,33 +82,36 @@ public class Register {
         pfConfirmaOculta.setVisible(true);
         
         String nome = txtNome.getText();
+        String email = txtEmail.getText();
+        String tel = txtTel.getText();
         String senha = pfSenhaOculta.getText();
         String confirmaSenha = pfConfirmaOculta.getText();
         String tipo = cbTipo.getValue(); 
 
-        // 1. VERIFICAÇÃO DE SENHA: Se forem diferentes, interrompe o cadastro
+        // 1. VERIFICAÇÃO DE SENHA
         if (!senha.equals(confirmaSenha)) {
             System.out.println("Erro: As senhas não coincidem!");
-            // Aqui futuramente você pode colocar um Label vermelho na tela para avisar o usuário
             return; 
         }
 
-        // 2. VERIFICAÇÃO DO TIPO: Evita que o usuário esqueça de escolher no ComboBox
+        // 2. VERIFICAÇÃO DO TIPO
         if (tipo == null) {
             System.out.println("Erro: Selecione o tipo de usuário (COMUM ou BIBLIOTECARIO)!");
             return;
         }
 
-        // Se passar nas verificações, faz o INSERT no banco
-        String sql = "INSERT INTO usuarios (nome, senha, tipo_usuario) VALUES (?, ?, ?)";
+        // Se passar nas verificações, faz o INSERT no banco de dados
+        String sql = "INSERT INTO usuarios (nome, email, telefone, senha, tipo_usuario) VALUES (?, ?, ?, ?, ?)";
         ConnectionFactory fabrica = new ConnectionFactory();
 
         try (Connection conexao = fabrica.obtemConexao();
              PreparedStatement comando = conexao.prepareStatement(sql)) {
 
             comando.setString(1, nome);
-            comando.setString(2, senha);
-            comando.setString(3, tipo);
+            comando.setString(2, email);
+            comando.setString(3, tel);
+            comando.setString(4, senha);
+            comando.setString(5, tipo);
             comando.executeUpdate();
 
             System.out.println("Usuário cadastrado com sucesso!");

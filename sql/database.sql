@@ -5,6 +5,8 @@ USE biblioteca;
 CREATE TABLE usuarios (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(40) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
     senha VARCHAR(40) NOT NULL,
     tipo_usuario ENUM('COMUM', 'BIBLIOTECARIO') DEFAULT 'COMUM'
 );
