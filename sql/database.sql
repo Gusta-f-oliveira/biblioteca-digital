@@ -33,3 +33,8 @@ INSERT INTO livros (titulo, autor) VALUES
 ('Neuromancer', 'William Gibson');
 
 SELECT * FROM livros;
+
+UPDATE livros SET caminho_imagem = 'senhor-dos-aneis.jpg' WHERE titulo = 'O Senhor dos Anéis';
+UPDATE livros SET caminho_imagem = 'duna.jpg' WHERE titulo = 'Duna';
+UPDATE livros SET caminho_imagem = 'fundacao.jpg' WHERE titulo = 'Fundação';
+UPDATE livros SET caminho_imagem = 'neuromancer.jpg' WHERE titulo = 'Neuromancer';

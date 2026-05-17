@@ -25,7 +25,7 @@ public class BibliotecaDigital extends Application {
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
 
-        // Pega a janela atual
+        // Pega GGa janela atual
         Stage janela = (Stage) scene.getWindow();
         
         // Manda a janela se reajustar ao tamanho do novo FXML
