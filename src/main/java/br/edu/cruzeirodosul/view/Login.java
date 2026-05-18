@@ -74,6 +74,7 @@ public class Login {
                 // Salva o tipo (usuário COMUM ou BIBLIOTECÁRIO) na variável global
                 br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado = resultado.getString("tipo_usuario");
 
+                // Salva o nome do usuário na variável global
                 br.edu.cruzeirodosul.model.Sessao.nomeUsuarioLogado = resultado.getString("nome");
                 
                 // Exibe a biblioteca após login bem sucessedido

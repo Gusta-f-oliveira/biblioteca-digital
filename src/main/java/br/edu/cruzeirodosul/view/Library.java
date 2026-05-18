@@ -119,7 +119,7 @@ public class Library {
 
         if (menuAberto) {
             // Fecha o menu suspenso
-            deslizar.setToX(-200);
+            deslizar.setToX(-250);
             menuAberto = false;
         } else {
             // Abre menu suspenso
