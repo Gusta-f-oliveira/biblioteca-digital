@@ -65,6 +65,11 @@ public class Login {
             ResultSet resultado = comando.executeQuery();
 
             if (resultado.next()) {
+                // 1. O usuário existe e a senha bateu!
+                // 2. SALVE O TIPO DELE NA SESSÃO GLOBAL:
+                br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado = resultado.getString("tipo_usuario");
+                
+                // 3. Mande ele para a biblioteca (seu código de setRoot fica aqui)
                 BibliotecaDigital.setRoot("library");
             } else {
                 System.out.println("Usuário ou senha inválidos!");

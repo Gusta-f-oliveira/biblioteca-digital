@@ -9,6 +9,7 @@ import br.edu.cruzeirodosul.BibliotecaDigital;
 import br.edu.cruzeirodosul.model.ConnectionFactory;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -22,14 +23,15 @@ public class Library {
     private TilePane tpPrateleira;
 
     @FXML
+    private Button btnMenu;
+
+    @FXML
     private AnchorPane apMenuLateral;
 
     private boolean menuAberto = false;
 
     @FXML
-    private void alternarMenu() {
-        System.out.println("O botão foi clicado e o Java me ouviu!");
-        
+    private void alternarMenu() {        
         // Prepara a animação que vai durar 0.3 segundos e vai mexer o menuLateral
         TranslateTransition deslizar = new TranslateTransition(Duration.seconds(0.3), apMenuLateral);
 
@@ -70,6 +72,11 @@ public class Library {
     @FXML
     public void initialize() {
         carregarLivrosDoBanco(); // Chama a função para preencher a estante a primeira vez
+
+        // Lê a memória global: Se for COMUM, o botão de menu desaparece!
+        if ("COMUM".equals(br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado)) {
+            btnMenu.setVisible(false);
+        }
     }
 
     private void carregarLivrosDoBanco() {
