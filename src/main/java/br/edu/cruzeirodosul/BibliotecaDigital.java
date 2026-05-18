@@ -8,13 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * JavaFX App
- */
 public class BibliotecaDigital extends Application {
 
     private static Scene scene;
 
+    // Exibe tela inicial (login) ao executar o programa
     @Override
     public void start(Stage stage) throws IOException { 
         scene = new Scene(loadFXML("login"));
@@ -37,11 +35,8 @@ public class BibliotecaDigital extends Application {
         if (fxml.equals("library")) {
             // Maximiza a tela
             janela.setMaximized(true);
-            
-            // Mensagem de aviso no topo
-            janela.setFullScreenExitHint("Pressione ESC para sair da estante");
         } else {
-            // Garante que telas de login/cadastro não herdem o modo tela cheia
+            // // Garante que telas de login e cadastro não herdem o modo tela cheia
             janela.setFullScreen(false);
             janela.sizeToScene();
             janela.centerOnScreen();

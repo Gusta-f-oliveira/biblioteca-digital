@@ -25,7 +25,7 @@
       <TextField fx:id="txtConfirmaVisivel" layoutX="113.0" layoutY="179.0" prefHeight="25.0" prefWidth="165.0" visible="false" />
       <CheckBox fx:id="chkMostrarConfirma" layoutX="300.0" layoutY="183.0" mnemonicParsing="false" onAction="#mostrarConfirma" text="eo" />
       <ComboBox fx:id="cbTipo" layoutX="100.0" layoutY="226.0" prefWidth="150.0" />
-      <Button fx:id="btnRegistrar1" layoutX="89.0" layoutY="281.0" onAction="#telaLogin" text="Voltar" />
+      <Button fx:id="btnRegistrar1" layoutX="89.0" layoutY="281.0" onAction="#voltarLogin" text="Voltar" />
         <Button fx:id="btnRegistrar" layoutX="196.0" layoutY="281.0" onAction="#cadastrarUsuario" text="Registrar" />
    </children>
 </AnchorPane>

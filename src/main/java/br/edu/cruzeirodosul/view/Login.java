@@ -14,7 +14,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class Login {
-
+    // Atributos
     @FXML
     private TextField txtNome;
 
@@ -27,6 +27,8 @@ public class Login {
     @FXML
     private CheckBox chkMostrarSenha;
 
+    // Métodos
+    // Botão exibir/ocultar senha
     @FXML
     private void mostrarSenha() throws  IOException {
         if (chkMostrarSenha.isSelected()) {
@@ -40,8 +42,10 @@ public class Login {
         }
     }
 
+    // Botão de fazer login
     @FXML
     private void login() throws IOException {
+        // Lê o campo da senha invisível. NOTA: essencial para não bugar ao tentar fazer login
         pfSenhaOculta.setVisible(true);
         
         String nomeUsuario = txtNome.getText();
@@ -65,11 +69,10 @@ public class Login {
             ResultSet resultado = comando.executeQuery();
 
             if (resultado.next()) {
-                // 1. O usuário existe e a senha bateu!
-                // 2. SALVE O TIPO DELE NA SESSÃO GLOBAL:
+                // Salva o tipo na variável global
                 br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado = resultado.getString("tipo_usuario");
                 
-                // 3. Mande ele para a biblioteca (seu código de setRoot fica aqui)
+                // Exibe a biblioteca após login bem sucessedido
                 BibliotecaDigital.setRoot("library");
             } else {
                 System.out.println("Usuário ou senha inválidos!");

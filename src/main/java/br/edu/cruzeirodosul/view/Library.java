@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class Library {
-    
+    // Atributos
     @FXML
     private TilePane tpPrateleira;
 
@@ -28,27 +28,103 @@ public class Library {
     @FXML
     private AnchorPane apMenuLateral;
 
+    @FXML
+    private Label lblUsuario;
+
+    // Inicia com o menu suspenso fechado
     private boolean menuAberto = false;
 
+    // Métodos
+    @FXML
+    public void initialize() {
+        carregarLivrosDoBanco(); // Chama a função para preencher a estante a primeira vez
+
+        // Lê a varável global: Se for COMUM, o botão de menu desaparece!
+        if ("COMUM".equals(br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado)) {
+            btnMenu.setVisible(false);
+        }
+    }
+
+    // Exibe os livros disponíveis na biblioteca
+    private void carregarLivrosDoBanco() {
+        // "Limpa" a estante antes de exibir os livros. NOTA: essencial para não duplicar os livros após inserir um novo livro
+        tpPrateleira.getChildren().clear();
+
+        // Pega os livros do Banco de Dados e exibe na biblioteca
+        String sql = "SELECT * FROM livros";
+        ConnectionFactory fabrica = new ConnectionFactory();
+        
+        // Tenta realizar a conexão com o Banco de Dados
+        try (Connection conexao = fabrica.obtemConexao();
+             PreparedStatement comando = conexao.prepareStatement(sql);
+             ResultSet resultado = comando.executeQuery()) {
+
+            // Para cada livro encontrado no Banco de Dados...
+            while (resultado.next()) {
+                
+                // 1. Cria a caixa do livro
+                VBox caixaLivro = new VBox();
+                caixaLivro.setPrefSize(120, 180); // Tamanho da "caixa"
+                caixaLivro.setAlignment(javafx.geometry.Pos.CENTER); // Centraliza a capa e o título
+                caixaLivro.setSpacing(5); // Espaço de 5 pixels entre a imagem e o texto
+
+                // 2. Pega as informações sobre o livro no Banco de Dados
+                String nomeNoBanco = resultado.getString("titulo");
+                String arquivoImagem = resultado.getString("capa");
+
+                Label tituloLivro = new Label(nomeNoBanco);
+                tituloLivro.setStyle("-fx-text-fill: white; -fx-font-weight: bold;"); // Deixa o texto branco para destacar no fundo marrom
+
+                // 3. Monta a imagem da capa
+                ImageView capaView = new ImageView();
+
+                // Verifica se o Banco de Dados tem alguma imagem cadastrada para este livro
+                if (arquivoImagem != null && !arquivoImagem.isEmpty()) {
+                    try {
+                        // Busca a imagem (capa do livro) dentro da pasta resources/imagens/
+                        String caminhoCompleto = "/imagens/" + arquivoImagem;
+                        javafx.scene.image.Image capa = new javafx.scene.image.Image(getClass().getResourceAsStream(caminhoCompleto));
+                        
+                        capaView.setImage(capa);
+                        capaView.setFitWidth(100);  // Deixa a imagem um pouco menor que o VBox para dar margem
+                        capaView.setFitHeight(140);
+                        capaView.setPreserveRatio(true); // Evita que a capa fique esticada/deformada
+                    } catch (Exception e) {
+                        System.out.println("Não foi possível carregar a imagem: " + arquivoImagem);
+                    }
+                }
+
+                // 4. Exibe o livro com as informações na biblioteca
+                caixaLivro.getChildren().addAll(capaView, tituloLivro);
+                tpPrateleira.getChildren().add(caixaLivro);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar livros: " + e.getMessage());
+        }
+    }
+
+    // Abre/fecha o menu suspenso
     @FXML
     private void alternarMenu() {        
-        // Prepara a animação que vai durar 0.3 segundos e vai mexer o menuLateral
+        // Prepara a animação de deslizar do menu suspenso
         TranslateTransition deslizar = new TranslateTransition(Duration.seconds(0.3), apMenuLateral);
 
         if (menuAberto) {
-            // Se estiver aberto, manda ele de volta para a posição -200 (escondido)
+            // Fecha o menu suspenso
             deslizar.setToX(-200);
             menuAberto = false;
         } else {
-            // Se estiver fechado, manda ele para a posição 0 (visível na tela)
+            // Abre menu suspenso
             deslizar.setToX(0);
             menuAberto = true;
         }
         
-        // Dá o "play" na animação
+        // Executa a animação de deslizamento do menu lateral
         deslizar.play();
     }
 
+    // Abre a janela para adicionar novo livro
     @FXML
     private void telaAdicionarLivro() throws IOException {
         // 1. Carrega o design da tela de adicionar livro sem apagar a biblioteca
@@ -65,72 +141,5 @@ public class Library {
         // 4. Mostra a janela flutuante na tela
         janelaModal.showAndWait();
         carregarLivrosDoBanco();
-    }
-
-    // Este método roda sozinho assim que a tela da biblioteca é carregada
-    // Este método roda automaticamente quando a tela abre
-    @FXML
-    public void initialize() {
-        carregarLivrosDoBanco(); // Chama a função para preencher a estante a primeira vez
-
-        // Lê a memória global: Se for COMUM, o botão de menu desaparece!
-        if ("COMUM".equals(br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado)) {
-            btnMenu.setVisible(false);
-        }
-    }
-
-    private void carregarLivrosDoBanco() {
-        tpPrateleira.getChildren().clear();
-
-        String sql = "SELECT * FROM livros";
-        ConnectionFactory fabrica = new ConnectionFactory();
-        
-        try (Connection conexao = fabrica.obtemConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql);
-             ResultSet resultado = comando.executeQuery()) {
-
-            // Para cada livro encontrado no MySQL...
-            while (resultado.next()) {
-                
-                // 1. Cria a caixa do livro e centraliza os itens dentro dela
-                VBox caixaLivro = new VBox();
-                caixaLivro.setPrefSize(120, 180);
-                caixaLivro.setAlignment(javafx.geometry.Pos.CENTER); // Centraliza a capa e o título
-                caixaLivro.setSpacing(5); // Dá um pequeno espaço de 5 pixels entre a imagem e o texto
-
-                // 2. Pega os dados do banco
-                String nomeNoBanco = resultado.getString("titulo");
-                String arquivoImagem = resultado.getString("caminho_imagem");
-
-                Label tituloLivro = new Label(nomeNoBanco);
-                tituloLivro.setStyle("-fx-text-fill: white; -fx-font-weight: bold;"); // Deixa o texto branco para destacar no fundo marrom
-
-                // 3. Monta a imagem da capa
-                ImageView capaView = new ImageView();
-
-                // Verifica se o banco de dados tem alguma imagem cadastrada para este livro
-                if (arquivoImagem != null && !arquivoImagem.isEmpty()) {
-                    try {
-                        // Busca a imagem dentro da pasta resources/imagens/
-                        String caminhoCompleto = "/imagens/" + arquivoImagem;
-                        javafx.scene.image.Image capa = new javafx.scene.image.Image(getClass().getResourceAsStream(caminhoCompleto));
-                        
-                        capaView.setImage(capa);
-                        capaView.setFitWidth(100);  // Deixa a imagem um pouco menor que o VBox para dar margem
-                        capaView.setFitHeight(140);
-                        capaView.setPreserveRatio(true); // Evita que a capa fique esticada/deformada
-                    } catch (Exception e) {
-                        System.out.println("Não foi possível carregar a imagem: " + arquivoImagem);
-                    }
-                }
-
-                // 4. Monta o lego: Adiciona PRIMEIRO a imagem, DEPOIS o título, e joga na prateleira
-                caixaLivro.getChildren().addAll(capaView, tituloLivro);
-                tpPrateleira.getChildren().add(caixaLivro);
-            }
-
-        } catch (Exception e) {
-            System.err.println("Erro ao buscar livros: " + e.getMessage());
-        }
     }
 }

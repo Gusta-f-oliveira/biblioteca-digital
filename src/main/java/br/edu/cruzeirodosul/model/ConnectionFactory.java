@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionFactory {
-
+    // Conecta a bibioteca com o Banco de Dados
     public Connection obtemConexao() {
         Properties props = new Properties();
         

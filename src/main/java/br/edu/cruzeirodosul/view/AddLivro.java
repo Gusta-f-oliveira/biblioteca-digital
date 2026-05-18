@@ -16,15 +16,21 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 public class AddLivro {
+    // Atributos
+    @FXML
+    private TextField txtTitulo;
+    
+    @FXML
+    private TextField txtAutor;
+    
+    @FXML
+    private TextField txtCapa;
+    
+    // Guarda o arquivo temporariamente entre um clique e outro
+    private File capaSelecionada; 
 
-    @FXML private TextField txtTitulo;
-    @FXML private TextField txtAutor;
-    @FXML private TextField txtCaminhoImagem;
-
-    // Esta variável guarda o arquivo temporariamente entre um clique e outro
-    private File imagemSelecionada; 
-
-    // Método para o botão "Selecionar Capa"
+    // Métodos
+    // Seleção da capa para o livro
     @FXML
     private void escolherImagem() {
         FileChooser seletor = new FileChooser();
@@ -33,39 +39,39 @@ public class AddLivro {
             new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg")
         );
 
-        // Abre a janela e guarda o arquivo na nossa variável global
-        imagemSelecionada = seletor.showOpenDialog(null);
+        // Abre a janela e guarda o arquivo na variável global
+        capaSelecionada = seletor.showOpenDialog(null);
 
-        if (imagemSelecionada != null) {
-            txtCaminhoImagem.setText(imagemSelecionada.getAbsolutePath());
+        if (capaSelecionada != null) {
+            txtCapa.setText(capaSelecionada.getAbsolutePath());
         }
     }
 
-    // Método para o botão "Salvar Livro"
+    // Enviar novo livro para a biblioteca
     @FXML
     private void salvarLivro() {
         String titulo = txtTitulo.getText();
         String autor = txtAutor.getText();
 
-        if (titulo.isEmpty() || imagemSelecionada == null) {
+        if (titulo.isEmpty() || capaSelecionada == null) {
             System.out.println("Erro: Preencha o título e selecione uma imagem!");
             return;
         }
 
-        // 1. CÓPIA FÍSICA DA IMAGEM
+        // 1. Cópia da capa do livro para o Banco de Dados
         try {
-            // Define o caminho para onde a imagem vai ser copiada (a sua pasta resources)
-            Path pastaDestino = Paths.get("src/main/resources/imagens/" + imagemSelecionada.getName());
+            // Define o caminho para onde a imagem vai ser copiada
+            Path pastaDestino = Paths.get("src/main/resources/imagens/" + capaSelecionada.getName());
             
             // Copia o arquivo do PC do usuário para a pasta do projeto
-            Files.copy(imagemSelecionada.toPath(), pastaDestino, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(capaSelecionada.toPath(), pastaDestino, StandardCopyOption.REPLACE_EXISTING);
             
         } catch (IOException e) {
             System.out.println("Erro ao copiar a imagem: " + e.getMessage());
             return; // Se falhar a cópia, cancela o salvamento no banco
         }
 
-        // 2. SALVAR NO BANCO DE DADOS
+        // 2. Salva as informações sobre o livro no Banco de Dados
         String sql = "INSERT INTO livros (titulo, autor, caminho_imagem) VALUES (?, ?, ?)";
         ConnectionFactory fabrica = new ConnectionFactory();
 
@@ -74,12 +80,12 @@ public class AddLivro {
 
             comando.setString(1, titulo);
             comando.setString(2, autor);
-            comando.setString(3, imagemSelecionada.getName()); // Salva só o nome do arquivo, ex: "capa.jpg"
+            comando.setString(3, capaSelecionada.getName()); // Salva só o nome do arquivo, ex: "capa.jpg"
             comando.executeUpdate();
 
             System.out.println("Livro salvo com sucesso!");
             
-            // Pega a janela atual (onde está o txtTitulo) e fecha ela
+            // Fecha a janela após enviar o livro para o Banco de Dados
             javafx.stage.Stage janelaAtual = (javafx.stage.Stage) txtTitulo.getScene().getWindow();
             janelaAtual.close();
 

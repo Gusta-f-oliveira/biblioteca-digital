@@ -1,7 +1,10 @@
+-- Criação do Banco de Dados "Biblioteca"
 CREATE DATABASE biblioteca;
+
+-- Selecionar Banco de Dados "Biblioteca" para começar a inserir os dados
 USE biblioteca;
 
--- Tabela unificada para facilitar o Login no Java
+-- Tabela necessária para realizar login/cadastro
 CREATE TABLE usuarios (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(40) NOT NULL,
@@ -11,7 +14,7 @@ CREATE TABLE usuarios (
     tipo_usuario ENUM('COMUM', 'BIBLIOTECARIO') DEFAULT 'COMUM'
 );
 
--- Tabela de livros (o seu Library.java faz "SELECT * FROM livros")
+-- Tabela de livros
 CREATE TABLE livros (
     id_livro INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(100) NOT NULL,
@@ -19,7 +22,7 @@ CREATE TABLE livros (
     caminho_imagem VARCHAR(255) -- Para futuramente carregar a capa do livro no Scene Builder
 );
 
--- Tabela para gerenciar a lista de favoritos (Relacionamento N para N)
+-- Tabela para gerenciar a lista de favoritos
 CREATE TABLE favoritos (
     id_usuario INT,
     id_livro INT,
@@ -28,15 +31,12 @@ CREATE TABLE favoritos (
     FOREIGN KEY (id_livro) REFERENCES livros(id_livro)
 );
 
-INSERT INTO livros (titulo, autor) VALUES 
-('O Senhor dos Anéis', 'J.R.R. Tolkien'),
-('Duna', 'Frank Herbert'),
-('Fundação', 'Isaac Asimov'),
-('Neuromancer', 'William Gibson');
+-- Inserção dos livros para a biblioteca
+INSERT INTO livros (titulo, autor, capa) VALUES 
+('O Senhor dos Anéis', 'J.R.R. Tolkien', 'senhor-dos-aneis.jpg'),
+('Duna', 'Frank Herbert', 'duna.jpg'),
+('Fundação', 'Isaac Asimov', 'fundacao.jpg'),
+('Neuromancer', 'William Gibson', 'neuromancer.jpg');
 
+-- Visualizar a tabela livros
 SELECT * FROM livros;
-
-UPDATE livros SET caminho_imagem = 'senhor-dos-aneis.jpg' WHERE titulo = 'O Senhor dos Anéis';
-UPDATE livros SET caminho_imagem = 'duna.jpg' WHERE titulo = 'Duna';
-UPDATE livros SET caminho_imagem = 'fundacao.jpg' WHERE titulo = 'Fundação';
-UPDATE livros SET caminho_imagem = 'neuromancer.jpg' WHERE titulo = 'Neuromancer';

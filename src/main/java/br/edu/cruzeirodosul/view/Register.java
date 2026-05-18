@@ -14,7 +14,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class Register {
-
+    // Atributos
     @FXML
     private TextField txtNome;
 
@@ -45,6 +45,13 @@ public class Register {
     @FXML
     private ComboBox<String> cbTipo;
 
+    // Métodos
+    @FXML
+    public void initialize() {
+        cbTipo.getItems().addAll("COMUM", "BIBLIOTECÁRIO");
+    }
+
+    // Botão exibir/ocultar senha
     @FXML
     private void mostrarSenha() throws  IOException {
         if (chkMostrarSenha.isSelected()) {
@@ -58,6 +65,7 @@ public class Register {
         }
     }
 
+    // Botão exibir/ocultar senha (do campo "Confirmar Senha")
     @FXML
     private void mostrarConfirma() throws IOException {
         if (chkMostrarConfirma.isSelected()) {
@@ -71,11 +79,13 @@ public class Register {
         }
     }
     
+    // Botão voltar para tela de login
     @FXML
-    private void telaLogin() throws IOException {
+    private void voltarLogin() throws IOException {
         BibliotecaDigital.setRoot("login");
     }
 
+    // Envia as informações de cadastro do usuário para o Banco de Dados
     @FXML
     private void cadastrarUsuario() throws IOException {
         pfSenhaOculta.setVisible(true);
@@ -120,13 +130,9 @@ public class Register {
             BibliotecaDigital.setRoot("login");
 
         } catch (SQLException e) {
+            // Verifica a conexão com o Banco de Dados
             System.err.println("Erro ao cadastrar: " + e.getMessage());
         }
-    }
-
-    @FXML
-    public void initialize() {
-        cbTipo.getItems().addAll("COMUM", "BIBLIOTECÁRIO");
     }
     
 }
