@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.TilePane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.cruzeirodosul.view.Library">
    <children>
-      <ScrollPane fitToWidth="true" layoutX="55.0" layoutY="62.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane fitToWidth="true" layoutX="55.0" layoutY="62.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
          <content>
             <TilePane fx:id="tpPrateleira" style="-fx-background-color: #8B5A2B;" />
          </content>
       </ScrollPane>
+      <AnchorPane fx:id="apMenuLateral" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2c3e50;" translateX="-200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="telaAdicionarLivro" layoutX="8.0" layoutY="110.0" mnemonicParsing="false" onAction="#telaAdicionarLivro" prefHeight="42.0" prefWidth="105.0" text="Adicionar Livro" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="btnMenu" mnemonicParsing="false" onAction="#alternarMenu" text="☰ Menu" />
    </children>
 </AnchorPane>

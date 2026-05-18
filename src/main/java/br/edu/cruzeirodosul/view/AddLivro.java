@@ -10,10 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import br.edu.cruzeirodosul.BibliotecaDigital;
 import br.edu.cruzeirodosul.model.ConnectionFactory;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
@@ -21,7 +19,7 @@ public class AddLivro {
 
     @FXML private TextField txtTitulo;
     @FXML private TextField txtAutor;
-    @FXML private Label lblCaminhoImagem;
+    @FXML private TextField txtCaminhoImagem;
 
     // Esta variável guarda o arquivo temporariamente entre um clique e outro
     private File imagemSelecionada; 
@@ -39,7 +37,7 @@ public class AddLivro {
         imagemSelecionada = seletor.showOpenDialog(null);
 
         if (imagemSelecionada != null) {
-            lblCaminhoImagem.setText(imagemSelecionada.getName());
+            txtCaminhoImagem.setText(imagemSelecionada.getAbsolutePath());
         }
     }
 
@@ -81,10 +79,11 @@ public class AddLivro {
 
             System.out.println("Livro salvo com sucesso!");
             
-            // Opcional: Volta para a biblioteca para ver o livro recém adicionado
-            BibliotecaDigital.setRoot("library");
+            // Pega a janela atual (onde está o txtTitulo) e fecha ela
+            javafx.stage.Stage janelaAtual = (javafx.stage.Stage) txtTitulo.getScene().getWindow();
+            janelaAtual.close();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             System.err.println("Erro ao salvar no banco: " + e.getMessage());
         }
     }

@@ -1,28 +1,80 @@
 package br.edu.cruzeirodosul.view;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import br.edu.cruzeirodosul.BibliotecaDigital;
 import br.edu.cruzeirodosul.model.ConnectionFactory;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class Library {
     
     @FXML
     private TilePane tpPrateleira;
 
-    // Este método roda sozinho assim que a tela da biblioteca é carregada
     @FXML
-    public void initialize() {
+    private AnchorPane apMenuLateral;
+
+    private boolean menuAberto = false;
+
+    @FXML
+    private void alternarMenu() {
+        System.out.println("O botão foi clicado e o Java me ouviu!");
+        
+        // Prepara a animação que vai durar 0.3 segundos e vai mexer o menuLateral
+        TranslateTransition deslizar = new TranslateTransition(Duration.seconds(0.3), apMenuLateral);
+
+        if (menuAberto) {
+            // Se estiver aberto, manda ele de volta para a posição -200 (escondido)
+            deslizar.setToX(-200);
+            menuAberto = false;
+        } else {
+            // Se estiver fechado, manda ele para a posição 0 (visível na tela)
+            deslizar.setToX(0);
+            menuAberto = true;
+        }
+        
+        // Dá o "play" na animação
+        deslizar.play();
+    }
+
+    @FXML
+    private void telaAdicionarLivro() throws IOException {
+        // 1. Carrega o design da tela de adicionar livro sem apagar a biblioteca
+        javafx.scene.Parent raiz = BibliotecaDigital.loadFXML("add_livro");
+
+        // 2. Cria uma nova janela do zero
+        javafx.stage.Stage janelaModal = new javafx.stage.Stage();
+        janelaModal.setScene(new javafx.scene.Scene(raiz));
+        janelaModal.setTitle("Adicionar Novo Livro");
+
+        // 3. Define a janela como Modal (obriga o usuário a fechar ela antes de voltar a clicar na biblioteca)
+        janelaModal.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+
+        // 4. Mostra a janela flutuante na tela
+        janelaModal.showAndWait();
         carregarLivrosDoBanco();
     }
 
+    // Este método roda sozinho assim que a tela da biblioteca é carregada
+    // Este método roda automaticamente quando a tela abre
+    @FXML
+    public void initialize() {
+        carregarLivrosDoBanco(); // Chama a função para preencher a estante a primeira vez
+    }
+
     private void carregarLivrosDoBanco() {
+        tpPrateleira.getChildren().clear();
+
         String sql = "SELECT * FROM livros";
         ConnectionFactory fabrica = new ConnectionFactory();
         
