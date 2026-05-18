@@ -27,8 +27,7 @@ public class BibliotecaDigital extends Application {
         Stage janela = (Stage) scene.getWindow();
         
         // Manda a janela se reajustar ao tamanho do novo FXML
-        janela.sizeToScene();
-        
+        janela.sizeToScene();        
         // Centraliza a nova janela no meio do monitor
         janela.centerOnScreen();
 

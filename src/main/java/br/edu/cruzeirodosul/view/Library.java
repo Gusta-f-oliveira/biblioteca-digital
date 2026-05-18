@@ -10,6 +10,7 @@ import br.edu.cruzeirodosul.model.ConnectionFactory;
 import br.edu.cruzeirodosul.model.Sessao;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -39,11 +40,6 @@ public class Library {
     @FXML
     public void initialize() {
         carregarLivrosDoBanco(); // Chama a função para preencher a estante a primeira vez
-
-        // Lê a varável global: Se for COMUM, o botão de menu desaparece!
-        if ("COMUM".equals(br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado)) {
-            btnMenu.setVisible(false);
-        }
 
         if (Sessao.nomeUsuarioLogado != null) {
             lblUsuario.setText("Olá, " + Sessao.nomeUsuarioLogado);
@@ -134,20 +130,36 @@ public class Library {
     // Abre a janela para adicionar novo livro
     @FXML
     private void telaAdicionarLivro() throws IOException {
-        // 1. Carrega o design da tela de adicionar livro sem apagar a biblioteca
-        javafx.scene.Parent raiz = BibliotecaDigital.loadFXML("add_livro");
+        if ("COMUM".equals(br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado)) {
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
 
-        // 2. Cria uma nova janela do zero
-        javafx.stage.Stage janelaModal = new javafx.stage.Stage();
-        janelaModal.setScene(new javafx.scene.Scene(raiz));
-        janelaModal.setTitle("Adicionar Novo Livro");
+            alerta.setTitle("Acesso Negado");
+            alerta.setHeaderText("Ação não permitida");
+            alerta.setContentText("Apenas usuários bibliotecários podem adicionar livros.");
 
-        // 3. Define a janela como Modal (obriga o usuário a fechar ela antes de voltar a clicar na biblioteca)
-        janelaModal.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            alerta.showAndWait();
+        } else {
+            // 1. Carrega o design da tela de adicionar livro sem apagar a biblioteca
+            javafx.scene.Parent raiz = BibliotecaDigital.loadFXML("add_livro");
 
-        // 4. Mostra a janela flutuante na tela
-        janelaModal.showAndWait();
-        carregarLivrosDoBanco();
+            // 2. Cria uma nova janela do zero
+            javafx.stage.Stage janelaModal = new javafx.stage.Stage();
+            janelaModal.setScene(new javafx.scene.Scene(raiz));
+            janelaModal.setTitle("Adicionar Novo Livro");
+
+            // 3. Define a janela como Modal (obriga o usuário a fechar ela antes de voltar a clicar na biblioteca)
+            janelaModal.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+
+            // 4. Mostra a janela flutuante na tela
+            janelaModal.showAndWait();
+            carregarLivrosDoBanco();
+        }
+    }
+
+    // Acessa a lista de favoritos do usuário
+    @FXML
+    private void telaFavoritos() throws  IOException {
+        BibliotecaDigital.setRoot("favoritos");
     }
 
     // Desloga da biblioteca e volta paar a tela de login

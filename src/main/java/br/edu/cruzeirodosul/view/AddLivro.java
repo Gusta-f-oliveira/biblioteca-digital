@@ -72,7 +72,7 @@ public class AddLivro {
         }
 
         // 2. Salva as informações sobre o livro no Banco de Dados
-        String sql = "INSERT INTO livros (titulo, autor, caminho_imagem) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO livros (titulo, autor, capa) VALUES (?, ?, ?)";
         ConnectionFactory fabrica = new ConnectionFactory();
 
         try (Connection conexao = fabrica.obtemConexao();
