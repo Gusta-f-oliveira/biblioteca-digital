@@ -19,7 +19,7 @@ CREATE TABLE livros (
     id_livro INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(100) NOT NULL,
     autor VARCHAR(100),
-    caminho_imagem VARCHAR(255) -- Para futuramente carregar a capa do livro no Scene Builder
+    capa VARCHAR(255)
 );
 
 -- Tabela para gerenciar a lista de favoritos

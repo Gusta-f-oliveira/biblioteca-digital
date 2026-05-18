@@ -48,10 +48,10 @@ public class Login {
         // Lê o campo da senha invisível. NOTA: essencial para não bugar ao tentar fazer login
         pfSenhaOculta.setVisible(true);
         
-        String nomeUsuario = txtNome.getText();
+        String campoUsuario = txtNome.getText();
         String senhaUsuario = pfSenhaOculta.getText();
 
-        String sql = "SELECT * FROM usuarios WHERE nome = ? AND senha = ?";
+        String sql = "SELECT * FROM usuarios WHERE (nome = ? OR email = ?) AND senha = ?";
         
         ConnectionFactory fabrica = new ConnectionFactory();
         
@@ -59,18 +59,22 @@ public class Login {
 
             if (conexao == null) {
                 System.out.println("Erro crítico: Banco de dados inoperante.");
+                return; // Evita o NullPointerException abaixo
             }
 
             PreparedStatement comando = conexao.prepareStatement(sql);
 
-            comando.setString(1, nomeUsuario);
-            comando.setString(2, senhaUsuario);
+            comando.setString(1, campoUsuario);
+            comando.setString(2, campoUsuario);
+            comando.setString(3, senhaUsuario);
 
             ResultSet resultado = comando.executeQuery();
 
             if (resultado.next()) {
-                // Salva o tipo na variável global
+                // Salva o tipo (usuário COMUM ou BIBLIOTECÁRIO) na variável global
                 br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado = resultado.getString("tipo_usuario");
+
+                br.edu.cruzeirodosul.model.Sessao.nomeUsuarioLogado = resultado.getString("nome");
                 
                 // Exibe a biblioteca após login bem sucessedido
                 BibliotecaDigital.setRoot("library");
@@ -83,6 +87,7 @@ public class Login {
         
     }
 
+    // Botão para acessar a tela de cadastro
     @FXML
     private void register() throws IOException {
         BibliotecaDigital.setRoot("register");

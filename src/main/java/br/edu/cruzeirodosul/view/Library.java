@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 
 import br.edu.cruzeirodosul.BibliotecaDigital;
 import br.edu.cruzeirodosul.model.ConnectionFactory;
+import br.edu.cruzeirodosul.model.Sessao;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,6 +44,12 @@ public class Library {
         if ("COMUM".equals(br.edu.cruzeirodosul.model.Sessao.tipoUsuarioLogado)) {
             btnMenu.setVisible(false);
         }
+
+        if (Sessao.nomeUsuarioLogado != null) {
+            lblUsuario.setText("Olá, " + Sessao.nomeUsuarioLogado);
+        } else {
+            lblUsuario.setText("Olá, Visitante");
+        }
     }
 
     // Exibe os livros disponíveis na biblioteca
@@ -78,7 +85,7 @@ public class Library {
                 // 3. Monta a imagem da capa
                 ImageView capaView = new ImageView();
 
-                // Verifica se o Banco de Dados tem alguma imagem cadastrada para este livro
+                // Verifica se o Banco de Dados tem alguma imagem salva para este livro
                 if (arquivoImagem != null && !arquivoImagem.isEmpty()) {
                     try {
                         // Busca a imagem (capa do livro) dentro da pasta resources/imagens/
@@ -86,11 +93,11 @@ public class Library {
                         javafx.scene.image.Image capa = new javafx.scene.image.Image(getClass().getResourceAsStream(caminhoCompleto));
                         
                         capaView.setImage(capa);
-                        capaView.setFitWidth(100);  // Deixa a imagem um pouco menor que o VBox para dar margem
+                        capaView.setFitWidth(100);  // Deixa a capa um pouco menor que o VBox para dar margem
                         capaView.setFitHeight(140);
                         capaView.setPreserveRatio(true); // Evita que a capa fique esticada/deformada
                     } catch (Exception e) {
-                        System.out.println("Não foi possível carregar a imagem: " + arquivoImagem);
+                        System.out.println("Não foi possível carregar a capa: " + arquivoImagem);
                     }
                 }
 
@@ -141,5 +148,11 @@ public class Library {
         // 4. Mostra a janela flutuante na tela
         janelaModal.showAndWait();
         carregarLivrosDoBanco();
+    }
+
+    // Desloga da biblioteca e volta paar a tela de login
+    @FXML
+    private void sair() throws IOException {
+        BibliotecaDigital.setRoot("login");
     }
 }
