@@ -13,6 +13,6 @@
       <TextField fx:id="txtAutor" layoutX="69.0" layoutY="93.0" />
       <Button fx:id="btnCapa" layoutX="14.0" layoutY="173.0" mnemonicParsing="false" onAction="#escolherImagem" text="Selecionar Capa" />
       <Button fx:id="btnSalvar" layoutX="136.0" layoutY="265.0" mnemonicParsing="false" onAction="#salvarLivro" text="Salvar Livro" />
-      <TextField fx:id="txtCaminhoImagem" layoutX="121.0" layoutY="173.0" prefHeight="25.0" prefWidth="183.0" />
+      <TextField fx:id="txtCapa" layoutX="121.0" layoutY="173.0" prefHeight="25.0" prefWidth="183.0" />
    </children>
 </AnchorPane>

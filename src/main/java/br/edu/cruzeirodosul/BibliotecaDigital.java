@@ -35,8 +35,8 @@ public class BibliotecaDigital extends Application {
             // Maximiza a tela
             janela.setMaximized(true);
         } else {
-            // // Garante que telas de login e cadastro não herdem o modo tela cheia
-            janela.setFullScreen(false);
+            // Garante que telas de login e cadastro não herdem o modo tela cheia
+            janela.setMaximized(false);
             janela.sizeToScene();
             janela.centerOnScreen();
         }
